@@ -6,6 +6,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 // Nueva ruta para posts
 Route::get('/posts', function () {
     return 'Listado de posts';
