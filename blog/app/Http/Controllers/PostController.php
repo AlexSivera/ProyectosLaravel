@@ -11,10 +11,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        // Por ahora datos de prueba
+        // Por ahora, usamos un array de ejemplo para los posts
         $posts = [
-            ['id' => 1, 'titulo' => 'Mi primer post', 'contenido' => 'Contenido...'],
-            ['id' => 2, 'titulo' => 'Segundo post', 'contenido' => 'Más contenido...'],
+            ['id' => 1, 'titulo' => 'Primer post', 'contenido' => 'Contenido del primer post'],
+            ['id' => 2, 'titulo' => 'Segundo post', 'contenido' => 'Contenido del segundo post'],
+            ['id' => 3, 'titulo' => 'Tercer post', 'contenido' => 'Contenido del tercer post'],
         ];
 
         return view('posts.index', compact('posts'));
@@ -24,9 +25,10 @@ class PostController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return "Nuevo post (formulario de creación)";
-    }
+{
+    return redirect()->route('inicio')
+        ->with('mensaje', 'Redirigido desde creación de post');
+}
 
     /**
      * Store a newly created resource in storage.
@@ -41,7 +43,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        // Por ahora solo muestra el ID
+        // Por ahora, pasamos el id a la vista
         return view('posts.show', compact('id'));
     }
 
@@ -49,10 +51,10 @@ class PostController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-    {
-        return "Edición de post con ID: $id";
-    }
-
+{
+    return redirect()->route('inicio')
+        ->with('mensaje', 'Redirigido desde edición de post ' . $id);
+}
     /**
      * Update the specified resource in storage.
      */

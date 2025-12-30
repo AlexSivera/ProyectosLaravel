@@ -4,15 +4,15 @@
 
 @section('contenido')
     <h1>Listado de posts</h1>
-    <ul class="list-group">
+    <ul>
         @forelse ($posts as $post)
-            <li class="list-group-item">
+            <li>
                 <a href="{{ route('posts.show', $post['id']) }}">
                     {{ $post['titulo'] }}
                 </a>
             </li>
         @empty
-            <li class="list-group-item">No hay posts que mostrar</li>
+            <li>No hay posts para mostrar</li>
         @endforelse
     </ul>
 @endsection
