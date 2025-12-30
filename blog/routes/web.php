@@ -16,3 +16,7 @@ Route::get('/posts', function () {
 Route::get('/posts/{id}', function ($id) {
     return view('posts.ficha', compact('id'));
 })->where('id', '[0-9]+')->name('posts_ficha');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
