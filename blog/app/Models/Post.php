@@ -9,6 +9,11 @@ class Post extends Model
 {
     use HasFactory;
 
-    // Campos que se pueden llenar masivamente
-    protected $fillable = ['titulo', 'contenido'];
+    protected $fillable = ['titulo', 'contenido', 'usuario_id'];
+
+    // Relación inversa: un post pertenece a un usuario
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class);
+    }
 }
