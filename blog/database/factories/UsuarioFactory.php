@@ -11,9 +11,10 @@ class UsuarioFactory extends Factory
 
     public function definition(): array
     {
+        $login = $this->faker->unique()->userName();
         return [
-            'login' => $this->faker->unique()->userName(),
-            'password' => $this->faker->word(),
+            'login' => $login,
+            'password' => bcrypt($login),
         ];
     }
 }

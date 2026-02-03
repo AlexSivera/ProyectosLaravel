@@ -35,8 +35,6 @@
             @endif
         </div>
 
-        <input type="hidden" name="usuario" value="{{ $usuario?->id ?? 1 }}">
-
         <button type="submit" class="btn btn-primary">Crear</button>
         <a href="{{ route('posts.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>

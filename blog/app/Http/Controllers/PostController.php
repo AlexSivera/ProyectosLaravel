@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Usuario;
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -26,7 +27,15 @@ class PostController extends Controller
     // Método destroy: Eliminar post
     public function destroy($id)
     {
-        Post::findOrFail($id)->delete();
+        $post = Post::findOrFail($id);
+
+        // Validar que el usuario es el propietario del post
+        if ($post->usuario_id !== Auth::id()) {
+            return redirect()->route('posts.index')
+                ->with('error', 'No tienes permiso para eliminar este post');
+        }
+
+        $post->delete();
 
         return redirect()->route('posts.index')
             ->with('mensaje', 'Post eliminado correctamente');
@@ -35,29 +44,30 @@ class PostController extends Controller
     // Mostrar formulario de creación
     public function create()
     {
-        $usuario = Usuario::first();
-        return view('posts.create', compact('usuario'));
+        return view('posts.create');
     }
 
     // Mostrar formulario de edición
     public function edit($id)
     {
         $post = Post::findOrFail($id);
+
+        // Validar que el usuario es el propietario del post
+        if ($post->usuario_id !== Auth::id()) {
+            return redirect()->route('posts.index')
+                ->with('error', 'No tienes permiso para editar este post');
+        }
+
         return view('posts.edit', compact('post'));
     }
 
-    // Métodos store y update (vacíos por ahora)
+    // Métodos store y update
     public function store(PostRequest $request)
     {
         $post = new Post();
         $post->titulo = $request->get('titulo');
         $post->contenido = $request->get('contenido');
-
-        $usuarioId = $request->get('usuario') ?? (Usuario::first()?->id ?? null);
-        if ($usuarioId) {
-            $post->usuario()->associate(Usuario::findOrFail($usuarioId));
-        }
-
+        $post->usuario_id = Auth::id();
         $post->save();
 
         return redirect()->route('posts.index')
@@ -67,6 +77,13 @@ class PostController extends Controller
     public function update(PostRequest $request, $id)
     {
         $post = Post::findOrFail($id);
+
+        // Validar que el usuario es el propietario del post
+        if ($post->usuario_id !== Auth::id()) {
+            return redirect()->route('posts.index')
+                ->with('error', 'No tienes permiso para editar este post');
+        }
+
         $post->titulo = $request->get('titulo');
         $post->contenido = $request->get('contenido');
         $post->save();

@@ -11,9 +11,11 @@
         </div>
     @endif
 
-    <a href="{{ route('posts.nuevoPrueba') }}" class="btn btn-primary mb-3">
-        Crear post de prueba
-    </a>
+    @if(session()->has('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <ul class="list-group">
         @forelse ($posts as $post)
@@ -29,17 +31,19 @@
                     <a href="{{ route('posts.show', $post) }}" class="btn btn-info btn-sm">
                         Ver
                     </a>
-                    <a href="{{ route('posts.editarPrueba', $post) }}" class="btn btn-warning btn-sm">
-                        Editar prueba
-                    </a>
-                    <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display: inline;">
-                        @method('DELETE')
-                        @csrf
-                        <button type="submit" class="btn btn-danger btn-sm"
-                                onclick="return confirm('¿Eliminar este post?')">
-                            Borrar
-                        </button>
-                    </form>
+                    @if(auth()->check() && auth()->user()->id === $post->usuario_id)
+                        <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning btn-sm">
+                            Editar
+                        </a>
+                        <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display: inline;">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('¿Eliminar este post?')">
+                                Borrar
+                            </button>
+                        </form>
+                    @endif
                 </div>
             </li>
         @empty
