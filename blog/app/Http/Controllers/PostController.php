@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Usuario;
+use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -10,7 +12,7 @@ class PostController extends Controller
     // Método index: Listado paginado y ordenado
     public function index()
     {
-        $posts = Post::orderBy('titulo', 'asc')->paginate(5);
+        $posts = Post::with('usuario')->orderBy('titulo', 'asc')->paginate(5);
         return view('posts.index', compact('posts'));
     }
 
@@ -30,28 +32,47 @@ class PostController extends Controller
             ->with('mensaje', 'Post eliminado correctamente');
     }
 
-    // Métodos create y edit (temporales)
+    // Mostrar formulario de creación
     public function create()
     {
-        return redirect()->route('inicio')
-            ->with('mensaje', 'Redirigido desde creación de post');
+        $usuario = Usuario::first();
+        return view('posts.create', compact('usuario'));
     }
 
+    // Mostrar formulario de edición
     public function edit($id)
     {
-        return redirect()->route('inicio')
-            ->with('mensaje', 'Redirigido desde edición de post ' . $id);
+        $post = Post::findOrFail($id);
+        return view('posts.edit', compact('post'));
     }
 
     // Métodos store y update (vacíos por ahora)
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        // Vacío por ahora
+        $post = new Post();
+        $post->titulo = $request->get('titulo');
+        $post->contenido = $request->get('contenido');
+
+        $usuarioId = $request->get('usuario') ?? (Usuario::first()?->id ?? null);
+        if ($usuarioId) {
+            $post->usuario()->associate(Usuario::findOrFail($usuarioId));
+        }
+
+        $post->save();
+
+        return redirect()->route('posts.index')
+            ->with('mensaje', 'Post creado correctamente');
     }
 
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
-        // Vacío por ahora
+        $post = Post::findOrFail($id);
+        $post->titulo = $request->get('titulo');
+        $post->contenido = $request->get('contenido');
+        $post->save();
+
+        return redirect()->route('posts.show', $post)
+            ->with('mensaje', 'Post actualizado correctamente');
     }
 
     // MÉTODOS TEMPORALES DE PRUEBA

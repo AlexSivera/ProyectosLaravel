@@ -21,4 +21,12 @@
     <a href="{{ route('posts.index') }}" class="btn btn-secondary mt-3">
         Volver al listado
     </a>
+    <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning mt-3">Editar</a>
+
+    <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display: inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger mt-3"
+                onclick="return confirm('¿Eliminar este post?')">Borrar</button>
+    </form>
 @endsection

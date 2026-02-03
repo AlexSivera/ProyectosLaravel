@@ -19,7 +19,7 @@
         @forelse ($posts as $post)
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div>
-                    {{ $post->titulo }}
+                    {{ $post->titulo }} ({{ optional($post->usuario)->login }})
                     <br>
                     <small class="text-muted">
                         Creado: {{ $post->created_at->format('d/m/Y H:i') }}
