@@ -29,8 +29,9 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        // Validar que el usuario es el propietario del post
-        if ($post->usuario_id !== Auth::id()) {
+        // Validar que el usuario es el propietario del post o es admin
+        $user = Auth::user();
+        if (!($user->rol === 'admin' || $post->usuario_id === $user->id)) {
             return redirect()->route('posts.index')
                 ->with('error', 'No tienes permiso para eliminar este post');
         }
@@ -52,8 +53,9 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        // Validar que el usuario es el propietario del post
-        if ($post->usuario_id !== Auth::id()) {
+        // Validar que el usuario es el propietario del post o es admin
+        $user = Auth::user();
+        if (!($user->rol === 'admin' || $post->usuario_id === $user->id)) {
             return redirect()->route('posts.index')
                 ->with('error', 'No tienes permiso para editar este post');
         }
@@ -78,8 +80,9 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        // Validar que el usuario es el propietario del post
-        if ($post->usuario_id !== Auth::id()) {
+        // Validar que el usuario es el propietario del post o es admin
+        $user = Auth::user();
+        if (!($user->rol === 'admin' || $post->usuario_id === $user->id)) {
             return redirect()->route('posts.index')
                 ->with('error', 'No tienes permiso para editar este post');
         }

@@ -31,7 +31,7 @@
                     <a href="{{ route('posts.show', $post) }}" class="btn btn-info btn-sm">
                         Ver
                     </a>
-                    @if(auth()->check() && auth()->user()->id === $post->usuario_id)
+                    @if(auth()->check() && (auth()->user()->id === $post->usuario_id || auth()->user()->rol === 'admin'))
                         <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning btn-sm">
                             Editar
                         </a>
