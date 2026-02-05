@@ -3,7 +3,7 @@
 @section('titulo', 'Inicio')
 
 @section('contenido')
-    <h1>Página de inicio</h1>
+    <h1>Blog de Alex</h1>
     <p>Bienvenidos al blog</p>
 
     <!-- Esto es para mostrar mensajes cuando rediriges -->

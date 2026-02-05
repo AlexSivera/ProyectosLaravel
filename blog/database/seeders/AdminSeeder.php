@@ -16,5 +16,15 @@ class AdminSeeder extends Seeder
             'login' => 'admin',
             'password' => bcrypt('admin'),
         ]);
+
+        Usuario::create([
+            'login' => 'alex',
+            'password' => bcrypt('alex'),
+        ]);
+
+        Usuario::create([
+            'login' => 'javi',
+            'password' => bcrypt('javi'),
+        ]);
     }
 }
